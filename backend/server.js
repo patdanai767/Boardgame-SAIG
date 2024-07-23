@@ -16,13 +16,6 @@ try {
     console.log(error)
 }
 
-app.get('/', (req,res) => {
-    res.json({
-        name : "fuck",
-        surname : "me"
-    });
-})
-
 app.use(require('./controllers/UserController'));
 
 const port = process.env.PORT || 8081;
