@@ -8,9 +8,6 @@ const gamelist = new mongoose.Schema({
     },
     gamecode: {
         type: String
-    },
-    gamecat: {
-        type: String
     }
 },{timestamps:true});
 

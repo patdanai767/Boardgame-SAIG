@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 function Navbar() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [showModal, setShowModal] = useState(false)
     const [user, setUser] = useState({
         username: '',
@@ -38,7 +38,7 @@ function Navbar() {
             await axios.get(config.api_path + '/user/info', config.headers()).then(res => {
                 if (res.data.message === 'success') {
                     setUser(res.data.result);
-                    setIsLoggedIn(false);
+                    setIsLoggedIn(true);
                 }
             })
         } catch (error) {

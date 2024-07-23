@@ -7,6 +7,7 @@ const service = require('../middleware/validatetoken');
 
 app.post('/user/register', async (req, res) => {
     try {
+        console.log(req.body)
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
             res.status(400);
@@ -14,12 +15,13 @@ app.post('/user/register', async (req, res) => {
         } else {
             const hashPassword = await bcrypt.hash(password, 10);
             const user = await UserModel.create({
-                username,
-                email,
+                username: username,
+                email: email,
                 password: hashPassword
             })
                 console.log(`User created ${user}`)
                 res.status(201).json({ _id: user.id, email: user.email })
+                res.send({message:"success"});
         }
 
     } catch (error) {
