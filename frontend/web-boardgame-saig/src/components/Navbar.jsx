@@ -38,7 +38,7 @@ function Navbar() {
             await axios.get(config.api_path + '/user/info', config.headers()).then(res => {
                 if (res.data.message === 'success') {
                     setUser(res.data.result);
-                    setIsLoggedIn(true);
+                    setIsLoggedIn(false);
                 }
             })
         } catch (error) {
@@ -72,7 +72,7 @@ function Navbar() {
                 </div>
 
                 <div>
-                    {isLoggedIn ? (
+                    {isLoggedIn && user ? (
                         <Link className="btn btn-ghost btn-warning ml-4" to='/login'>Login</Link>
                     ) : (
                         <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>

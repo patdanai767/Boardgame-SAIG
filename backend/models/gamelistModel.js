@@ -6,8 +6,17 @@ const gamelist = new mongoose.Schema({
         required:true,
         unqiue:true
     },
-    gamecode: {
-        type: String
+    img: {
+        type: String,
+        required:true
+    },
+    genre: {
+        type: String,
+        required:true
+    },
+    year: {
+        type: Number,
+        required:true
     }
 },{timestamps:true});
 

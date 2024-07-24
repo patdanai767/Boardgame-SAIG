@@ -7,21 +7,22 @@ const service = require('../middleware/validatetoken');
 
 app.post('/user/register', async (req, res) => {
     try {
-        console.log(req.body)
-        const { username, email, password } = req.body;
-        if (!username || !email || !password) {
-            res.status(400);
-            throw new Error("Please, fill all the mandatory!");
+        const { email } = req.body;
+        const userExist = await UserModel.findOne({ email });
+
+        if (userExist) {
+            return res.status(400).json({ message: "User already exist." });
         } else {
-            const hashPassword = await bcrypt.hash(password, 10);
-            const user = await UserModel.create({
-                username: username,
-                email: email,
+            const hashPassword = await bcrypt.hash(req.body.password, 10);
+            const user = ({
+                username: req.body.username,
+                email: req.body.email,
                 password: hashPassword
-            })
-                console.log(`User created ${user}`)
-                res.status(201).json({ _id: user.id, email: user.email })
-                res.send({message:"success"});
+            });
+            const userData = new UserModel(user);
+            console.log(userData);
+            const savedUser = await userData.save();
+            res.status(200).json({ message: "success", savedUser });
         }
 
     } catch (error) {
@@ -50,7 +51,7 @@ app.post('/user/login', async (req, res) => {
                 },
                 process.env.JWT_SECRET, { expiresIn: "1hr" }
             );
-            res.send({token : accesstoken, message: 'success'});
+            res.send({ token: accesstoken, message: 'success' });
         }
 
     } catch (error) {
@@ -59,15 +60,15 @@ app.post('/user/login', async (req, res) => {
     }
 })
 
-app.get('/user/info',service.isLogin, async(req,res) => {
-    try{
+app.get('/user/info', service.isLogin, async (req, res) => {
+    try {
         const payload = jwt.decode(service.getToken(req));
         const user = await UserModel.findById(payload.user.id)
 
-        res.send({result:user, message : 'success'});
-    }catch(err){
+        res.send({ result: user, message: 'success' });
+    } catch (err) {
         res.status(400);
-        res.send({message: err.message});
+        res.send({ message: err.message });
     }
 })
 

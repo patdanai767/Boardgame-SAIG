@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true})); //2
 app.use(bodyParser.json());
+app.use('/uploads',express.static('uploads'));
 
 try {
     mongoose.connect(process.env.MONGO_URI);
@@ -17,6 +18,7 @@ try {
 }
 
 app.use(require('./controllers/UserController'));
+app.use(require('./controllers/GameController'));
 
 const port = process.env.PORT || 8081;
 

@@ -19,10 +19,9 @@ function Register() {
         password: password
       }
       await axios.post(config.api_path + '/user/register', payload).then(res => {
-          if(res.data.message === 'success'){
-            res.send(payload);   
+          if(res.data.message === 'success'){ 
+            navigate('/login');
           }
-          navigate('/login');
       })
     } catch (error) {
       throw error.response.data;
