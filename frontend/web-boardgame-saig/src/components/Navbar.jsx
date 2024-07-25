@@ -13,8 +13,6 @@ function Navbar() {
         email: ''
     });
 
-    const navigate = useNavigate();
-
     const handleSignOut = async () => {
         try {
             localStorage.removeItem(config.token_name);
@@ -40,6 +38,7 @@ function Navbar() {
                     setUser(res.data.result);
                     setIsLoggedIn(false);
                 }
+                e.preventDefault();
             })
         } catch (error) {
             console.log({ message: error.message });
