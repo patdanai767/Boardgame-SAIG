@@ -4,8 +4,13 @@ const service = require('../middleware/validatetoken');
 const gameModel = require('../models/gamelistModel');
 const upload = require('../middleware/upload');
 
-app.post('/upload',upload.single('photo'),async(req,res) => {
-    res.json(req.file.path)
+app.get('/game/list',async(req,res) => {
+    try {
+        const gameList = await gameModel.find();
+        res.send({ result: gameList, message: 'success' });
+    } catch (error) {
+        res.status(404).json({message: "success"})
+    }
 })
 
 app.post('/game/add',upload.single('single'), async (req, res) => {
