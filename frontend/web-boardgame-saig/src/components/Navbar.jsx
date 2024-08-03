@@ -10,7 +10,8 @@ function Navbar() {
     const [showModal, setShowModal] = useState(false)
     const [user, setUser] = useState({
         username: '',
-        email: ''
+        email: '',
+        role: '',
     });
 
     const handleSignOut = async () => {
@@ -53,9 +54,9 @@ function Navbar() {
                 </div>
                 <div className="relative flex-none grow ">
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                    <Link to='/gamelist' className="text-white hover:text-gray-300 transition duration-300">Gamelist</Link>
-                    <Link to='/table' className="text-white hover:text-gray-300 transition duration-300">Table</Link>
-                    <Link to='history' className="text-white hover:text-gray-300 transition duration-300">History</Link>
+                    <Link to='/gamelist' className="hover:text-gray-400 transition duration-300">Gamelist</Link>
+                    <Link to='/table' className="hover:text-gray-400 transition duration-300">Table</Link>
+                    <Link to='history' className="hover:text-gray-400 transition duration-300">History</Link>
                     </div>
                 </div>
 
@@ -95,7 +96,7 @@ function Navbar() {
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
-                                    <td class="px-2 py-2">Member</td>
+                                    <td class="px-2 py-2">{user.role}</td>
                                 </tr>
                             </tbody>
                         </table>
