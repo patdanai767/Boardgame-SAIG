@@ -34,7 +34,7 @@ function Navbar() {
 
     const fetchData = async () => {
         try {
-            await axios.get(config.api_path + '/user/info', config.headers()).then(res => {
+            await axios.get(config.api_path + '/api/auth/infoUser', config.headers()).then(res => {
                 if (res.data.message === 'success') {
                     setUser(res.data.result);
                     setIsLoggedIn(false);
@@ -81,22 +81,22 @@ function Navbar() {
             </div>
 
             <Modal isVisble={showModal} onClose={e => setShowModal(false)}>
-                <div class="bg-transparent rounded-lg py-3 border">
+                <div class="bg-gray-800 rounded-lg py-3 border">
                     <div class="p-2">
                         <h3 class="text-center text-xl text-white font-medium leading-8 border-b pb-2">Profile</h3>
                         <table className="mt-2">
                             <tbody>
                                 <tr>
                                     <td class="px-2 py-2 text-gray-500 font-bold">Name</td>
-                                    <td class="px-2 py-2">{user.username}</td>
+                                    <td class="px-2 py-2 text-white ">{user.username}</td>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2 text-gray-500 font-bold">Email</td>
-                                    <td class="px-2 py-2">{user.email}</td>
+                                    <td class="px-2 py-2 text-white">{user.email}</td>
                                 </tr>
                                 <tr>
                                     <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
-                                    <td class="px-2 py-2">{user.role}</td>
+                                    <td class="px-2 py-2 text-white">{user.role}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,11 +1,9 @@
-const express = require('express');
-const app = express();
-const UserModel = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const service = require('../middleware/validatetoken');
+import UserModel from '../models/userModel.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import service from '../middleware/validatetoken.js';
 
-app.post('/user/register', async (req, res) => {
+export const register = async (req, res, next) => {
     try {
         const { email } = req.body;
         const userExist = await UserModel.findOne({ email });
@@ -25,28 +23,28 @@ app.post('/user/register', async (req, res) => {
             res.status(200).json({ message: "success", savedUser });
         }
 
-    } catch (error) {
-        res.statusCode = 400;
-        res.send({ message: error });
+    } catch (err) {
+        next(err);
     }
-})
+}
 
-app.post('/user/login', async (req, res) => {
+export const login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
-        if (!email, !password) {
+        const {email} = req.body;
+        const user = await UserModel.findOne({ email });
+        if (!email) {
             res.status(400);
             throw new Error("Please, fill all the mandatory!");
         }
 
-        const user = await UserModel.findOne({ email });
-        if (user && (await bcrypt.compare(password, user.password))) {
+        if (user && (await bcrypt.compare(req.body.password, user.password))) {
             const accesstoken = jwt.sign(
                 {
                     user: {
                         username: user.username,
                         email: user.email,
-                        id: user.id
+                        id: user._id,
+                        role: user.role
                     }
                 },
                 process.env.JWT_SECRET, { expiresIn: "1hr" }
@@ -54,13 +52,12 @@ app.post('/user/login', async (req, res) => {
             res.send({ token: accesstoken, message: 'success' });
         }
 
-    } catch (error) {
-        res.statusCode = 401;
-        throw new Error("Email or Password is not valid");
+    } catch (err) {
+        next(err)
     }
-})
+}
 
-app.get('/user/info', service.isLogin, async (req, res) => {
+export const userInfo = async (req, res) => {
     try {
         const payload = jwt.decode(service.getToken(req));
         const user = await UserModel.findById(payload.user.id)
@@ -70,6 +67,4 @@ app.get('/user/info', service.isLogin, async (req, res) => {
         res.status(400);
         res.send({ message: err.message });
     }
-})
-
-module.exports = app;
+}

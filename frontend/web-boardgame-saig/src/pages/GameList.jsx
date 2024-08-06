@@ -17,7 +17,7 @@ const GameList = () => {
 
   const fetchData = async () => {
     try {
-      await axios.get(config.api_path + '/game/list').then(res => {
+      await axios.get(config.api_path + '/api/game/list').then(res => {
         setDatas(res.data.result);
       })
     } catch (error) {

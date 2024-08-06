@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const gamelist = new mongoose.Schema({
     gamename: {
@@ -21,5 +21,5 @@ const gamelist = new mongoose.Schema({
 },{timestamps:true});
 
 const gameModel = mongoose.model('gamelist',gamelist);
-module.exports = gameModel;
+export default gameModel;
 

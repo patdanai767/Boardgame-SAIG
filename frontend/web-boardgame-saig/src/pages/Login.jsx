@@ -4,18 +4,21 @@ import axios from 'axios';
 import config from '../config';
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: ""
+  })
 
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value}))
+  };
+
   const handleLogin = async () => {
     try {
-      const payload = {
-        email: email,
-        password: password
-      }
-      await axios.post(config.api_path + '/user/login', payload).then(res => {
+
+      await axios.post(config.api_path + '/api/auth/login', credentials).then(res => {
         if (res.data.message === 'success') {
           console.log("Login is successful!");
 
@@ -48,7 +51,7 @@ function Login() {
             <path
               d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
           </svg>
-          <input type="text" className="grow form-control" placeholder="example@gmail.com" onChange={e => setEmail(e.target.value)}/>
+          <input type="text" id="email" className="grow form-control" placeholder="example@gmail.com" onChange={handleChange}/>
         </label>
         <label className="input input-bordered flex items-center gap-2 mb-6">
           <svg
@@ -61,7 +64,7 @@ function Login() {
               d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
               clipRule="evenodd" />
           </svg>
-          <input type="password" className="grow form-control" placeholder='password' onChange={e => setPassword(e.target.value)} />
+          <input type="password" id='password' className="grow form-control" placeholder='password' onChange={handleChange} />
         </label>
         <button className='btn btn-outline btn-success mb-4' onClick={handleLogin}>Sign in</button>
         <div className='mx-auto text-xs underline text-blue'>

@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from'jsonwebtoken';
 
-module.exports = {
+export default {
     getToken: (req) => {
         return req.headers.authorization.replace('Bearer ', '');
     },
