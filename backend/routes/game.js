@@ -1,13 +1,13 @@
 import express from "express";
-import { list,add } from "../controllers/GameController.js";
+import { getGames,createGame } from "../controllers/GameController.js";
 import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-router.get('/list',list);
+router.get('/list',getGames);
 router.post('/add', function(req,res){
     upload;
-    add;
+    createGame;
 });
 
 

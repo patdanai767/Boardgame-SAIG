@@ -29,7 +29,9 @@ const userSchema = new mongoose.Schema({
         default: "user"
     },
 
-    
+    booking: {
+        type: [String]
+    }
 }, { timestamps: true });
 
 const userModel = mongoose.model('user', userSchema);

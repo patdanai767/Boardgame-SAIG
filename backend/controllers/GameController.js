@@ -1,6 +1,6 @@
 import gameModel from '../models/gamelistModel.js';
 
-export const list = async(req,res) => {
+export const getGames = async(req,res) => {
     try {
         const gameList = await gameModel.find();
         res.send({ result: gameList, message: 'success' });
@@ -9,7 +9,7 @@ export const list = async(req,res) => {
     }
 }
 
-export const add = async(req,res) => {
+export const createGame = async(req,res) => {
     try {
         const { gamename } = req.body;
         const gameExist = await gameModel.findOne({ gamename })

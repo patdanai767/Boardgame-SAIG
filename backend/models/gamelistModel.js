@@ -3,23 +3,26 @@ import mongoose from 'mongoose';
 const gamelist = new mongoose.Schema({
     gamename: {
         type: String,
-        required:true,
-        unqiue:true
+        required: true,
+        unqiue: true
     },
     img: {
         type: String,
-        required:true
+        required: true
     },
     genre: {
         type: String,
-        required:true
+        required: true
     },
     year: {
         type: Number,
-        required:true
+        required: true
+    },
+    desc: {
+        type: String
     }
-},{timestamps:true});
+}, { timestamps: true });
 
-const gameModel = mongoose.model('gamelist',gamelist);
+const gameModel = mongoose.model('gamelist', gamelist);
 export default gameModel;
 
