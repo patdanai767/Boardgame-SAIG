@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "admin"],
         default: "user"
     },
-
-    booking: {
-        type: [String]
-    }
 }, { timestamps: true });
 
 const userModel = mongoose.model('user', userSchema);

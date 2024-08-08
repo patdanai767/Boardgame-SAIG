@@ -1,33 +1,32 @@
-import config from '../config';
 import axios from 'axios';
 import { useState, useEffect } from 'react'
 
 const GameList = () => {
 
-  const [datas, setDatas] = useState({
-    gamename: '',
-    genre: '',
-    img: '',
-    year: '',
-  })
+  // const [datas, setDatas] = useState({
+  //   gamename: '',
+  //   genre: '',
+  //   img: '',
+  //   year: '',
+  // })
 
-  useEffect(() => {
-    fetchData();
-  }, [])
+  // useEffect(() => {
+  //   fetchData();
+  // }, [])
 
-  const fetchData = async () => {
-    try {
-      await axios.get(config.api_path + '/api/game/list').then(res => {
-        setDatas(res.data.result);
-      })
-    } catch (error) {
-      console.log({ message: error.message });
-    }
-  }
+  // const fetchData = async () => {
+  //   try {
+  //     await axios.get(config.api_path + '/api/game/list').then(res => {
+  //       setDatas(res.data.result);
+  //     })
+  //   } catch (error) {
+  //     console.log({ message: error.message });
+  //   }
+  // }
 
   return (
     <div>
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      {/* <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className=" text-lg">Products</h2>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
@@ -46,7 +45,7 @@ const GameList = () => {
             </a>
           )): ''}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

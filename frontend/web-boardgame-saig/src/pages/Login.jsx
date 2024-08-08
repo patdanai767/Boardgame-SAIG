@@ -1,40 +1,35 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import config from '../config';
+import { AuthContext } from '../contexts/AuthContext';
 
 function Login() {
   const [credentials, setCredentials] = useState({
-    email: "",
-    password: ""
+    email: undefined,
+    password: undefined
   })
+
+  const { user,loading, error, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value}))
+    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }))
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch({ type: "LOGIN_START"});
     try {
-
-      await axios.post(config.api_path + '/api/auth/login', credentials).then(res => {
-        if (res.data.message === 'success') {
-          console.log("Login is successful!");
-
-          localStorage.setItem(config.token_name, res.data.token)
-          navigate('/');
-          
-        } else {
-          console.log("Failend to login!");
-        }
-
-      })
-
-    } catch (error) {
-      throw error.response.data;
+      const res = await axios.post("/api/auth/login", credentials);
+      dispatch({type: "LOGIN_SUCCESS", payload: res.data.result});
+      navigate("/");
+    } catch (err) {
+      dispatch({type: "LOGIN_FAILURE", payload: err.response.data})
     }
   }
+
+  console.log(user);
 
   return (
     <div className='flex items-center h-screen w-full'>
@@ -51,7 +46,7 @@ function Login() {
             <path
               d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
           </svg>
-          <input type="text" id="email" className="grow form-control" placeholder="example@gmail.com" onChange={handleChange}/>
+          <input type="text" id="email" className="grow form-control" placeholder="example@gmail.com" onChange={handleChange} />
         </label>
         <label className="input input-bordered flex items-center gap-2 mb-6">
           <svg
@@ -66,7 +61,8 @@ function Login() {
           </svg>
           <input type="password" id='password' className="grow form-control" placeholder='password' onChange={handleChange} />
         </label>
-        <button className='btn btn-outline btn-success mb-4' onClick={handleLogin}>Sign in</button>
+        <button className='btn btn-outline btn-success mb-4' onClick={handleLogin} disabled={loading}>Sign in</button>
+        {error && <span>{error.message}</span>}
         <div className='mx-auto text-xs underline text-blue'>
           <Link to='/register'>Sign up</Link>
         </div>

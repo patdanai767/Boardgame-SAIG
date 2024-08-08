@@ -1,48 +1,22 @@
 import axios from "axios";
-import config from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Navbar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(true);
-    const [showModal, setShowModal] = useState(false)
-    const [user, setUser] = useState({
-        username: '',
-        email: '',
-        role: '',
-    });
+    const [showModal, setShowModal] = useState(false);
+
+    const { user } = useContext(AuthContext);
 
     const handleSignOut = async () => {
         try {
-            localStorage.removeItem(config.token_name);
+            localStorage.removeItem("user"); //broken
             setIsLoggedIn(prev => !prev);
-
-            setUser({
-                username: '',
-                email: ''
-            })
         } catch (e) {
             console.log({ message: e.message })
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    const fetchData = async () => {
-        try {
-            await axios.get(config.api_path + '/api/auth/infoUser', config.headers()).then(res => {
-                if (res.data.message === 'success') {
-                    setUser(res.data.result);
-                    setIsLoggedIn(false);
-                }
-                e.preventDefault();
-            })
-        } catch (error) {
-            console.log({ message: error.message });
         }
     }
 
@@ -54,25 +28,26 @@ function Navbar() {
                 </div>
                 <div className="relative flex-none grow ">
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                    <Link to='/gamelist' className="hover:text-gray-400 transition duration-300">Gamelist</Link>
-                    <Link to='/table' className="hover:text-gray-400 transition duration-300">Table</Link>
-                    <Link to='history' className="hover:text-gray-400 transition duration-300">History</Link>
+                        <Link to='/gamelist' className="hover:text-gray-400 transition duration-300">Gamelist</Link>
+                        <Link to='/table' className="hover:text-gray-400 transition duration-300">Table</Link>
+                        <Link to='history' className="hover:text-gray-400 transition duration-300">History</Link>
                     </div>
                 </div>
-
-                <div className="flex-none gap-2 ml-4">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <img
-                                alt="profile"
-                                src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
-                                onClick={(e) => setShowModal(true)} />
+                {user !== null && (
+                    <div className="flex-none gap-2 ml-4">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                            <div className="w-10 rounded-full">
+                                <img
+                                    alt="profile"
+                                    src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
+                                    onClick={(e) => setShowModal(true)} />
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
                 <div>
-                    {isLoggedIn && user ? (
+                    {isLoggedIn && user === null ? (
                         <Link className="btn btn-ghost btn-warning ml-4" to='/login'>Login</Link>
                     ) : (
                         <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
@@ -81,9 +56,9 @@ function Navbar() {
             </div>
 
             <Modal isVisble={showModal} onClose={e => setShowModal(false)}>
-                <div class="bg-gray-800 rounded-lg py-3 border">
-                    <div class="p-2">
-                        <h3 class="text-center text-xl text-white font-medium leading-8 border-b pb-2">Profile</h3>
+                <div className="bg-gray-800 rounded-lg py-3 border">
+                    <div className="p-2">
+                        <h3 className="text-center text-xl text-white font-medium leading-8 border-b pb-2">Profile</h3>
                         <table className="mt-2">
                             <tbody>
                                 <tr>
