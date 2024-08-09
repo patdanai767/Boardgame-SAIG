@@ -3,7 +3,7 @@ import Layout from './layout/layout';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Table from './pages/Table';
+import Table from './pages/table/Table';
 import History from './pages/History';
 import GameList from './pages/GameList';
 import Intro from './pages/introduce/intro';

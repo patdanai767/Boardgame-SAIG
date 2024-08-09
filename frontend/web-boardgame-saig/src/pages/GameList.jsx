@@ -24,9 +24,13 @@ const GameList = () => {
                 />
               </div>
               <h3 className="mt-4 text-sm"
-                key={item[index]}>{item.gamename}</h3>
+                key={item[index]}
+                >
+                  {item.gamename}</h3>
               <h5 className="mt-1 text-sm text-gray-500"
-                key={item[index]}>{item.genre}</h5>
+                key={item[index]}
+                >
+                  {item.genre}</h5>
 
             </a>
           )) : ''}
