@@ -1,8 +1,8 @@
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import "./Navbar.css";
 
 function Navbar() {
 
@@ -11,26 +11,27 @@ function Navbar() {
 
     const { user } = useContext(AuthContext);
 
-    const handleSignOut = async () => {
+    const handleSignOut = (e) => {
         try {
             localStorage.removeItem("user"); //broken
             setIsLoggedIn(prev => !prev);
         } catch (e) {
             console.log({ message: e.message })
         }
+        window.location.reload();
     }
 
     return (
         <>
-            <div className="navbar">
-                <div className="flex-1 w-32">
-                    <Link to='/' className="btn btn-ghost text-xl">BoardGame-SAIG</Link>
+            <div className="Navbar">
+                <div className="">
+                    <Link to='/home' className="btn btn-ghost text-xl">BoardGame-SAIG</Link>
                 </div>
                 <div className="relative flex-none grow ">
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                        <Link to='/gamelist' className="hover:text-gray-400 transition duration-300">Gamelist</Link>
-                        <Link to='/table' className="hover:text-gray-400 transition duration-300">Table</Link>
-                        <Link to='history' className="hover:text-gray-400 transition duration-300">History</Link>
+                        <li><Link to='/gamelist'>Gamelist</Link></li>
+                        <li><Link to='/table'>Table</Link></li>
+                        <li><Link to='history'>History</Link></li>
                     </div>
                 </div>
                 {user !== null && (
@@ -48,7 +49,7 @@ function Navbar() {
 
                 <div>
                     {isLoggedIn && user === null ? (
-                        <Link className="btn btn-ghost btn-warning ml-4" to='/login'>Login</Link>
+                        <Link className="btn btn-outline btn-success ml-4" to='/login'>Login</Link>
                     ) : (
                         <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
                     )}
@@ -60,20 +61,22 @@ function Navbar() {
                     <div className="p-2">
                         <h3 className="text-center text-xl text-white font-medium leading-8 border-b pb-2">Profile</h3>
                         <table className="mt-2">
-                            <tbody>
-                                <tr>
-                                    <td class="px-2 py-2 text-gray-500 font-bold">Name</td>
-                                    <td class="px-2 py-2 text-white ">{user.username}</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2 text-gray-500 font-bold">Email</td>
-                                    <td class="px-2 py-2 text-white">{user.email}</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
-                                    <td class="px-2 py-2 text-white">{user.role}</td>
-                                </tr>
-                            </tbody>
+                            {user !== null ? (
+                                <tbody>
+                                    <tr>
+                                        <td class="px-2 py-2 text-gray-500 font-bold">Name</td>
+                                        <td class="px-2 py-2 text-white ">{user.username}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-2 text-gray-500 font-bold">Email</td>
+                                        <td class="px-2 py-2 text-white">{user.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
+                                        <td class="px-2 py-2 text-white">{user.role}</td>
+                                    </tr>
+                                </tbody>
+                            ) : (null)}
                         </table>
                     </div>
                 </div>

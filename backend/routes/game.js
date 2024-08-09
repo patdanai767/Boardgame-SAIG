@@ -4,8 +4,8 @@ import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-router.get('/list',getGames);
-router.post('/add', function(req,res){
+router.get('/',getGames);
+router.post('/create', function(req,res){
     upload;
     createGame;
 });
