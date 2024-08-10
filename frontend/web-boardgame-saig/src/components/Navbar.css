@@ -1,6 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 *{
     font-family: sans-serif;
 }
+
+.logo-navbar {
+    font-family: "Bebas Neue", sans-serif; 
+    font-size: 30px;
+    margin-top: 10px;
+    color: #009688;
+    position: relative;
+}
+
+.logo-navbar::after{
+    content:'';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    text-shadow: 3px 4px 5px black;
+    transition: text-shadow .3s ease-in-out ;
+}
+
+.logo-navbar:hover::after {
+    text-shadow: 0 0 5px #ffffff;
+}
+
+
 
 .Navbar {
     width: 85%;

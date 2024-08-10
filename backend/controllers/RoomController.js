@@ -1,4 +1,5 @@
 import roomModel from "../models/roomModel.js";
+import tableModel from "../models/tableModel.js";
 import { createError } from "../middleware/error.js";
 
 export const createRoom = async (req, res, next) => {
@@ -45,6 +46,19 @@ export const getRooms = async(req,res,next) => {
     try {
         const showRooms = await roomModel.find();
         res.status(200).json(showRooms);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const getTableRooms = async(req,res,next) => {
+    try {
+        const room = await roomModel.findById(req.params.id);
+        const list = await Promise.all(room.tables.map((table) =>{
+            return tableModel.findById(table);
+        })
+    );
+    res.status(200).json(list);
     } catch (err) {
         next(err);
     }

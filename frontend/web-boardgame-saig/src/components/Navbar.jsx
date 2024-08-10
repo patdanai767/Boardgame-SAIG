@@ -25,7 +25,7 @@ function Navbar() {
         <>
             <div className="Navbar">
                 <div className="">
-                    <Link to='/home' className="btn btn-ghost text-xl">BoardGame-SAIG</Link>
+                    <Link to='/home' className="logo-navbar">BoardGame-SAIG</Link>
                 </div>
                 <div className="relative flex-none grow ">
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">

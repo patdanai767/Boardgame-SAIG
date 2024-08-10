@@ -5,7 +5,7 @@
 }
 
 .background {
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 100%;
     height: 100%;
 }
@@ -13,7 +13,7 @@
 .room {
     border: 1px solid white;
     width: 65%;
-    height: 100vh;
+    /* height: 100vh; */
     overflow: hidden;
 }
 
@@ -24,5 +24,5 @@
     top: 0;
     left: 0;
     color: white;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
