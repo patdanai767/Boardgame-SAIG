@@ -1,6 +1,6 @@
 import gameModel from '../models/gamelistModel.js';
 
-export const createGame = async(req,res) => {
+export const createGame = async (req, res) => {
     try {
         const { gamename } = req.body;
         const gameExist = await gameModel.findOne({ gamename })
@@ -31,7 +31,20 @@ export const updateGame = async (req, res, next) => {
     }
 }
 
-export const deleteGame = async(req,res,next) => {
+export const updateCat = async (req, res, next) => {
+    const catId = req.params.catid;
+    try {
+        const updatedCat = await gameModel.findByIdAndUpdate(req.params.id,
+            { $addToSet: { cats: catId } },
+            { new: true }
+        );
+        res.status(200).json(updatedCat);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const deleteGame = async (req, res, next) => {
     try {
         await gameModel.findByIdAndDelete(req.params.id);
         res.status(200).json("Game has been deleted.");
@@ -40,7 +53,7 @@ export const deleteGame = async(req,res,next) => {
     }
 }
 
-export const getGame = async(req,res,next) => {
+export const getGame = async (req, res, next) => {
     try {
         const showGame = await gameModel.findById(req.params.id);
         res.status(200).json(showGame);
@@ -49,7 +62,7 @@ export const getGame = async(req,res,next) => {
     }
 }
 
-export const getGames = async(req,res,next) => {
+export const getGames = async (req, res, next) => {
     try {
         const showGames = await gameModel.find();
         res.status(200).json(showGames);

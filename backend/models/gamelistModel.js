@@ -10,7 +10,7 @@ const gamelist = new mongoose.Schema({
         type: String,
         required: true
     },
-    genre: {
+    cats: {
         type: [String],
         required: true
     },

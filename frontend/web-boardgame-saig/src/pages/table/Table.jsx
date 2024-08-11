@@ -2,12 +2,23 @@ import "./Table.css";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css";
+import { format, setHours, setMinutes } from "date-fns";
 
 const Table = () => {
   const { data, loading, error } = useFetch(`api/room`)
   const [tables, setTables] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [selectedTables, setSelectedTables] = useState([]);
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 0), 13),
+  );
+  const [endDate, setEndDate] = useState(
+    setHours(setMinutes(new Date(), 30), 20),
+  );
+
+  console.log(startDate)
 
   const fetchData = async (req, res) => {
     try {
@@ -15,7 +26,7 @@ const Table = () => {
         setTables(res.data);
       })
     } catch (error) {
-      res.status(404).json("error");
+      res.status(404).json(error);
     }
   }
 
@@ -29,20 +40,12 @@ const Table = () => {
     setSelectedTables(checked ? [...selectedTables, value] : selectedTables.filter(item => item !== value))
   }
 
-  console.log(selectedTables)
+  // console.log(selectedTables)
 
   return (
     <div className="background">
       <div className="flex">
         <div className="room">
-        <div className="time-pick grid grid-rows grid-flow-col gap-3 m-2">
-          <div className="flex justify-context btn"> 13:00</div>
-          <div className="flex justify-context btn"> 14:00</div>
-          <div className="flex justify-context btn"> 15:00</div>
-          <div className="flex justify-context btn"> 16:00</div>
-          <div className="flex justify-context btn"> 17:00</div>
-          <div className="flex justify-context btn"> 18:00</div>
-        </div>
           <div className="grid grid-rows-3 grid-flow-col gap-10 p-4">
             {data.length > 0 ? data.map((items, index) => (
               <div className="text-center border p-3" key={items._id}>{items.title} ({items.desc})
@@ -66,20 +69,36 @@ const Table = () => {
             )) : ""}
           </div>
         </div>
+
         <div className="sidebar">
           <div class="block text-center mt-4">Reservation</div>
-          <form class="max-w-sm mx-auto mt-5">
-            <label for="email-address-icon" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Table</label>
-            <div class="relative">
-              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-                  <path d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z" />
-                  <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z" />
-                </svg>
-              </div>
-              <input type="text" id="email-address-icon" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com"/>
-            </div>
-          </form>
+          <div className="mt-3 font-bold text-gray-400 ml-8">Time Interval</div>
+          <div className="flex grid grid-cols-2 text-center mt-2">
+            <DatePicker
+              className="btn btn-outline btn-info"
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={30}
+              timeCaption="Time"
+              minTime={setHours(setMinutes(new Date(), 30), 12)}
+              maxTime={setHours(setMinutes(new Date(), 30), 20)}
+              dateFormat="MMMM d, yyyy h:mm aa"
+            />
+            <DatePicker
+              className="btn btn-outline btn-info"
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={30}
+              timeCaption="Time"
+              minTime={setHours(setMinutes(new Date(), 30), 12)}
+              maxTime={setHours(setMinutes(new Date(), 30), 20)}
+              dateFormat="MMMM d, yyyy h:mm aa"
+            />
+          </div>
         </div>
       </div>
     </div>

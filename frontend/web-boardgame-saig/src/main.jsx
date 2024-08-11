@@ -6,8 +6,8 @@ import "./main.css"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
   </React.StrictMode>,
 )

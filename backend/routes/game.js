@@ -1,23 +1,24 @@
 import express from "express";
-import { getGames,createGame,updateGame, deleteGame, getGame } from "../controllers/GameController.js";
+import { getGames,createGame,updateGame, deleteGame, getGame, updateCat} from "../controllers/GameController.js";
 import upload from "../middleware/upload.js";
 import {verifyAdmin} from "../middleware/validatetoken.js";
 
 const router = express.Router();
 
-//create room
-router.post("/createGame",verifyAdmin,createGame);
-//update room
+//create game
+router.post('/createGame', function(req,res){
+    upload;
+    verifyAdmin;
+    createGame;
+});
+//update game
 router.put("/:id",verifyAdmin,updateGame);
-//delete room
+router.put("/:id/:catid",verifyAdmin,updateCat);
+//delete game
 router.delete("/:id",verifyAdmin,deleteGame);
 
 router.get('/',getGames);
 router.get('/:id',getGame);
-router.post('/create', function(req,res){
-    upload;
-    createGame;
-});
 
 
 export default router;
