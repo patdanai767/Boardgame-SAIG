@@ -1,5 +1,5 @@
 import express from "express";
-import { createTable, updateTable, deleteTable, getTables, getTable } from "../controllers/TableController.js";
+import { createTable, updateTable, deleteTable, getTables, getTable, updateTableAvailability } from "../controllers/TableController.js";
 import { verifyAdmin } from "../middleware/validatetoken.js";
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.post("/:roomid", verifyAdmin, createTable);
 
 //update
 router.put("/:id", verifyAdmin, updateTable);
+router.put("/availability/:id", updateTableAvailability);
 
 //delete
 router.delete("/:id/:roomid", verifyAdmin, deleteTable);

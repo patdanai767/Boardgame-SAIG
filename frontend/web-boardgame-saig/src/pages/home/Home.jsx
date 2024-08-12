@@ -1,30 +1,37 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react"
-import { AuthContext } from "../contexts/AuthContext"
-import useFetch from "../hooks/useFetch"
+import { AuthContext } from "../../contexts/AuthContext"
+import useFetch from "../../hooks/useFetch"
+import { useNavigate } from "react-router-dom"
+import "./Home.css";
 
 function Home() {
   const [dataCats, setDataCats] = useState([]);
+  const [games, setGames] = useState([]);
   const [search, setSearch] = useState('');
   const [searchCat, setSearchCat] = useState('');
   const { user } = useContext(AuthContext);
-  const { data, loading, error } = useFetch(`/api/game`)
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = data.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(data.length / recordsPerPage);
+  const records = games.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(games.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1)
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetchCats();
+    fetchData();
   }, [])
 
-  const fetchCats = async (req, res) => {
+  const fetchData = async (req, res) => {
     try {
       await axios.get("/api/cat").then(res => {
         setDataCats(res.data);
+      })
+      await axios.get("/api/game").then(res => {
+        setGames(res.data);
       })
     } catch (err) {
       res.status(400).json(err)
@@ -34,9 +41,6 @@ function Home() {
   const handleSelect = (e) => {
     setSearchCat(e.target.value)
   }
-
-  console.log(searchCat)
-  console.log(records)
 
   const prevPage = () => {
     if (currentPage !== 1) {
@@ -50,13 +54,19 @@ function Home() {
     }
   }
 
-  console.log(searchCat)
+  const handleClick = () => {
+    if (user) {
+      navigate("/table")
+    } else {
+      navigate("/login");
+    }
+  }
 
   return (
     <>
       <div className="max-w-lg mx-auto text-center">
         <div className="join">
-              <input className="input input-bordered join-item" placeholder="Search Boardgame..." onChange={(e) => setSearch(e.target.value)} />
+          <input className="input input-bordered join-item" placeholder="Search Boardgame..." onChange={(e) => setSearch(e.target.value)} />
           <button className="btn btn-info btn-outline join-item">Search</button>
         </div>
       </div>
@@ -72,7 +82,7 @@ function Home() {
       {/* BoardGame List */}
       <div>
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className=" text-lg text-center mb-3">Products</h2>
+          <h2 className=" text-lg text-center mb-3 font-bold">Products</h2>
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {records.length > 0 ? records.filter((item) => { return search.toLowerCase() === '' ? item : item.gamename.toLowerCase().includes(search); }).map((item) => (
               <a className="group border p-3" key={item._id}>
@@ -83,9 +93,9 @@ function Home() {
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                   />
                 </div>
-                <h3 className="mt-4 text-sm"
-                >
+                <h3 className="mt-4">
                   {item.gamename}</h3>
+                <button onClick={handleClick} className="btn btn-sm float-end glass btn-accent text-white">Reserve</button>
               </a>
             )) : ''}
           </div>

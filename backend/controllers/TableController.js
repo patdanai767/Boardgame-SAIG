@@ -10,7 +10,7 @@ export const createTable = async (req, res, next) => {
         const saveTable = await newTable.save();
         try {
             await roomModel.findByIdAndUpdate(roomId, {
-                $push: { tables: saveTable._id},
+                $push: { tables: saveTable._id },
             })
         } catch (err) {
             next(err);
@@ -35,13 +35,30 @@ export const updateTable = async (req, res, next) => {
     }
 }
 
+export const updateTableAvailability = async (req, res, next) => {
+
+    try {
+        await tableModel.updateOne(
+            { "tableNumbers._id": req.params.id },
+            {
+                $push: {
+                    "tableNumbers.$.unavailableDates": req.body.dates
+                },
+            }
+        )
+        res.status(200).json("Table is updated!");
+    } catch (err) {
+        next(err);
+    }
+}
+
 export const deleteTable = async (req, res, next) => {
     const roomId = req.params.roomid;
     try {
         await tableModel.findByIdAndDelete(req.params.id);
         try {
             await roomModel.findByIdAndUpdate(roomId, {
-                $pull: { tables: req.params.id},
+                $pull: { tables: req.params.id },
             });
         } catch (err) {
             next(err);
@@ -61,7 +78,7 @@ export const getTables = async (req, res, next) => {
     }
 }
 
-export const getTable = async(req,res, next) => {
+export const getTable = async (req, res, next) => {
     try {
         const showTable = await tableModel.findById(req.params.id);
         res.status(200).json(showTable);
