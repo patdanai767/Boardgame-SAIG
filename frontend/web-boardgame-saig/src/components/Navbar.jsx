@@ -31,7 +31,7 @@ function Navbar() {
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
                         <li><Link to='/gamelist'>Gamelist</Link></li>
                         <li><Link to='/table'>Table</Link></li>
-                        <li><Link to='history'>History</Link></li>
+                        <li><Link to='/history'>Bookings</Link></li>
                     </div>
                 </div>
                 {user !== null && (

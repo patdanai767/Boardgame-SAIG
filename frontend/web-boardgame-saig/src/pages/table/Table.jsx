@@ -1,9 +1,11 @@
 import "./Table.css";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import { formatISO, setHours, setMinutes, subDays, addDays, setSeconds, setMilliseconds } from "date-fns";
+import { setHours, setMinutes, subDays, addDays, setSeconds, setMilliseconds } from "date-fns";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Table = () => {
   const [tables, setTables] = useState([]);
@@ -18,6 +20,10 @@ const Table = () => {
     setHours(setMinutes(setSeconds(setMilliseconds(new Date(), 0), 0), 30), 13),
   );
   const [price, setPrice] = useState(0);
+  const [search, setSearch] = useState('');
+  const { user } = useContext(AuthContext)
+  const navigate = useNavigate();
+  const Stabledate = setHours(setMinutes(setSeconds(setMilliseconds(new Date(), 0), 0), 0), 0);
 
   const fetchData = async (req, res) => {
     try {
@@ -38,20 +44,23 @@ const Table = () => {
 
   useEffect(() => {
     fetchData();
+    if (!user) {
+      navigate("/login")
+    }
   }, [])
 
-// SELECT HERE
+  // SELECT HERE
   const handleSelect = (e) => {
     const checked = e.target.checked;
     const value = e.target.value;
     setSelectedTables(checked ? [...selectedTables, value] : selectedTables.filter(item => item !== value))
   }
 
+  // console.log(selectedTables);
 
   const getDatesInRange = () => {
-
-    const end = endTime.getTime();
-    var date = startTime.getTime();
+    var end = endTime.getTime() - Stabledate.getTime() + startDate.getTime()
+    var date = startTime.getTime() - Stabledate.getTime() + startDate.getTime()
 
     const dates = [];
 
@@ -73,6 +82,7 @@ const Table = () => {
     return !isFound
   }
 
+  // console.log(user._id)
   const handleClick = async () => {
     try {
       await Promise.all(selectedTables.map((tableId) => {
@@ -82,37 +92,49 @@ const Table = () => {
         return res.data;
       })
       );
-      navigator("/table");
+      const payload = {
+        start: alldates[0],
+        end: alldates[alldates.length - 1],
+        userId: user._id,
+        game: search,
+        tables: selectedTables,
+        totalAmount: price
+      }
+      await axios.post("api/booking", payload);
+      navigator("/");
     } catch (err) {
     }
   }
 
-  console.log(selectedTables);
-  console.log(alldates)
 
   const calulatePrice = () => {
     if (selectedTables.length !== 0 && alldates.length !== 0) {
       setPrice(15 * selectedTables.length * alldates.length);
-    }else{
+    } else {
       setPrice(0);
     }
   }
+
+  const onSearch = (searchTerm) => {
+    setSearch(searchTerm)
+  }
+
   return (
     <div className="background">
       <div className="flex">
         <div className="room">
           <div className="grid grid-rows-3 grid-flow-col gap-10 p-4">
             {rooms.length > 0 ? rooms.map((items, index) => (
-              <div className="text-center border p-3">{items.title} ({items.desc})
-                {tables.length > 0 ? tables.map((table) => (
-                  <div>
+              <div className="text-center border p-3" key={items._id}>{items.title} ({items.desc})
+                {tables.length > 0 ? tables.map((table, i) => (
+                  <div key={i}>
                     {rooms[index].tables ? items.tables.map((e, ing) => (
                       <div className="grid grid-rows-2 grid-flow-col gap-2">
                         {table.tableNumbers.length > 0 && items.tables[ing] === table._id ? table.tableNumbers.map((num) => (
-                          <div>
+                          <div key={num._id}>
                             <input type="checkbox" className="hidden peer" id={num._id} value={num._id} onChange={handleSelect} disabled={!isAvailable(num)} />
                             <label htmlFor={num._id} className="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                              <div className="block">{num.number}</div>
+                              <div className="block" >{table.title + num.number}</div>
                             </label>
                           </div>
                         )) : ""}
@@ -150,7 +172,7 @@ const Table = () => {
                   timeCaption="Time"
                   minTime={setHours(setMinutes(new Date(), 30), 12)}
                   maxTime={setHours(setMinutes(new Date(), 30), 20)}
-                  dateFormat="h:mm aa"
+                  dateFormat="kk:mm"
                 />
                 <div>To</div>
                 <DatePicker
@@ -162,19 +184,28 @@ const Table = () => {
                   timeFormat="HH:mm"
                   timeIntervals={30}
                   timeCaption="Time"
-                  minTime={setHours(setMinutes(new Date(), 30), 12)}
+                  minTime={startTime}
                   maxTime={setHours(setMinutes(new Date(), 30), 20)}
-                  dateFormat="h:mm aa"
+                  dateFormat="kk:mm"
                 />
               </div>
             </div>
-            <div>
+            <div className="dropdown">
               <div className="font-bold text-gray-400 ml-8 mb-2">BoardGame</div>
-              <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+              <input type="text" placeholder="Type here" value={search} onChange={e => setSearch(e.target.value)} className="input input-bordered w-full max-w-xs text-white" />
+              <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                {games.filter(item => {
+                  return search.toLowerCase() === '' ?
+                    item : item.gamename.toLowerCase().includes(search);
+                }).slice(0, 5)
+                  .map((item) => (
+                    <li><button className="text-white" onClick={() => onSearch(item.gamename)}>{item.gamename}</button></li>
+                  ))}
+              </ul>
             </div>
             <div>
               <div className="font-bold text-gray-400 ml-8 mb-2">Select Room</div>
-              <input type="click" readOnly placeholder="Select room and table" className="input input-bordered w-full max-w-xs" />
+              <input type="click" readOnly placeholder="Select room and table" className="input input-bordered w-full max-w-xs text-white" />
             </div>
             <div>
               <div className="font-bold text-gray-400 ml-8 mb-2">Price</div>

@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom"
 import "./Home.css";
 
 function Home() {
-  const [dataCats, setDataCats] = useState([]);
   const [games, setGames] = useState([]);
   const [search, setSearch] = useState('');
-  const [searchCat, setSearchCat] = useState('');
   const { user } = useContext(AuthContext);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
@@ -27,9 +25,6 @@ function Home() {
 
   const fetchData = async (req, res) => {
     try {
-      await axios.get("/api/cat").then(res => {
-        setDataCats(res.data);
-      })
       await axios.get("/api/game").then(res => {
         setGames(res.data);
       })
@@ -38,9 +33,9 @@ function Home() {
     }
   }
 
-  const handleSelect = (e) => {
-    setSearchCat(e.target.value)
-  }
+  // const handleSelect = (e) => {
+  //   setSearchCat(e.target.value)
+  // }
 
   const prevPage = () => {
     if (currentPage !== 1) {
@@ -65,10 +60,19 @@ function Home() {
   return (
     <>
       <div className="max-w-lg mx-auto text-center">
-        <div className="join">
-          <input className="input input-bordered join-item" placeholder="Search Boardgame..." onChange={(e) => setSearch(e.target.value)} />
-          <button className="btn btn-info btn-outline join-item">Search</button>
-        </div>
+      <label className="input input-bordered flex items-center gap-2">
+        <input type="text" className="grow" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          className="h-4 w-4 opacity-70">
+          <path
+            fillRule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clipRule="evenodd" />
+        </svg>
+        </label>
       </div>
 
       {/* Select Catagory */}
@@ -84,7 +88,10 @@ function Home() {
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className=" text-lg text-center mb-3 font-bold">Products</h2>
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {records.length > 0 ? records.filter((item) => { return search.toLowerCase() === '' ? item : item.gamename.toLowerCase().includes(search); }).map((item) => (
+            {records.length > 0 ? records.filter((item) => {
+              return search.toLowerCase() === '' ?
+                item : item.gamename.toLowerCase().includes(search);
+            }).map((item) => (
               <a className="group border p-3" key={item._id}>
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img

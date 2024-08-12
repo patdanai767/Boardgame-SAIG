@@ -10,6 +10,7 @@ import userRoute from "./routes/user.js";
 import tableRoute from "./routes/table.js";
 import roomRoute from "./routes/room.js";
 import catRoute from "./routes/cat.js";
+import bookingRoute from "./routes/booking.js"
 
 const app = express();
 dotenv.config();
@@ -33,7 +34,8 @@ app.use("/api/game", gameRoute);
 app.use("/api/user", userRoute);
 app.use("/api/table", tableRoute);
 app.use("/api/room", roomRoute);
-app.use("/api/cat", catRoute)
+app.use("/api/cat", catRoute);
+app.use("/api/booking", bookingRoute);
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

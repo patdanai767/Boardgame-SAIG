@@ -66,15 +66,3 @@ export const login = async (req, res, next) => {
         next(err)
     }
 }
-
-export const userInfo = async (req, res) => {
-    try {
-        const payload = jwt.decode(service.getToken(req));
-        const user = await UserModel.findById(payload.user.id)
-
-        res.send({ result: user, message: 'success' });
-    } catch (err) {
-        res.status(400);
-        res.send({ message: err.message });
-    }
-}
