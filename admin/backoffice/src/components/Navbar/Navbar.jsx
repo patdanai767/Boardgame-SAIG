@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "./Modal";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import Modal from "../Modal";
 import "./Navbar.css";
 
 function Navbar() {
@@ -64,20 +64,16 @@ function Navbar() {
                             {user !== null ? (
                                 <tbody>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Name</td>
-                                        <td class="px-2 py-2 text-white ">{user.username}</td>
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Name</td>
+                                        <td className="px-2 py-2 text-white ">{user.username}</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Email</td>
-                                        <td class="px-2 py-2 text-white">{user.email}</td>
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Email</td>
+                                        <td className="px-2 py-2 text-white">{user.email}</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
-                                        {user.isAdmin === true ? (
-                                            <td class="px-2 py-2 text-white">Admin</td>
-                                        ):(
-                                            <td class="px-2 py-2 text-white">User</td>
-                                        )}
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Role</td>
+                                        <td className="px-2 py-2 text-white">{user.role}</td>
                                     </tr>
                                 </tbody>
                             ) : (null)}

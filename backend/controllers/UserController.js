@@ -45,22 +45,21 @@ export const login = async (req, res, next) => {
 
         if (!comparePassword)
             return next(createError(400, "Wrong password or Email"));
-        const { role } = user
         const token = jwt.sign(
             {
                 id: user._id,
-                role: role
+                isAdmin: user.isAdmin
             },
             process.env.JWT_SECRET
         )
 
-        const { password,...otherDetails } = user._doc;
+        const { password, isAdmin,...otherDetails } = user._doc;
         res
             .cookie("access_token", token, {
                 httpOnly: true
             })
             .status(200)
-            .json({ result: { ...otherDetails }, role, message: "success" })
+            .json({ result: { ...otherDetails}, isAdmin})
 
     } catch (err) {
         next(err)
