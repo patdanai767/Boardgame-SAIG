@@ -5,9 +5,9 @@ import Template from '../components/Template';
 function home() {
 
   return (
-    <div>
+    <Template>
       Welcome to Admin SERVER
-    </div>
+    </Template>
   )
 }
 

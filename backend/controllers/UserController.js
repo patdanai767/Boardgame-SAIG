@@ -1,6 +1,7 @@
 import UserModel from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import userModel from '../models/userModel.js';
 // import service from '../middleware/validatetoken.js';
 
 //Register api
@@ -63,5 +64,23 @@ export const login = async (req, res, next) => {
 
     } catch (err) {
         next(err)
+    }
+}
+
+export const getUsers = async(req,res) => {
+    try {
+        const AllUser = await UserModel.find();
+        res.status(200).json(AllUser);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        await userModel.findByIdAndDelete(req.params.id);
+        res.status(200).json("Table has been deleted.")
+    } catch (err) {
+        next(err);
     }
 }
