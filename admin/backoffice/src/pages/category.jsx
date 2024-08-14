@@ -5,7 +5,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
 
-function category() {
+function userReport() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
@@ -21,7 +21,7 @@ function category() {
 
   const fetchUsers = async (req, res) => {
     try {
-      axios.get("/api/auth").then(res => {
+      axios.get("/api/cat").then(res => {
         setUsers(res.data);
       })
     } catch (error) {
@@ -51,7 +51,7 @@ function category() {
     }).then(async res => {
       if (res.isConfirmed) {
         try {
-          await axios.delete("/api/auth/" + item._id).then(() => {
+          await axios.delete("/api/cat/" + item._id).then(() => {
             fetchUsers();
             Swal.fire({
               title: 'Delete Data',
@@ -81,6 +81,7 @@ function category() {
           <thead>
             <tr>
               <th></th>
+              <th className="text-lg">ID</th>
               <th className="text-lg">Email</th>
               <th className="text-lg">Name</th>
               <th className="text-lg">CreateAt</th>
@@ -92,6 +93,7 @@ function category() {
             {records.map((item, index) => (
               <tr className="hover" key={index}>
                 <th>{index + 1}</th>
+                <td>{item._id}</td>
                 <td>{item.email}</td>
                 <td>{item.username}</td>
                 <td>{format((item.createdAt), "Pp")}</td>
@@ -113,4 +115,4 @@ function category() {
   )
 }
 
-export default category
+export default userReport
