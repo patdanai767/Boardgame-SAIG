@@ -29,7 +29,7 @@ function Navbar() {
                 </div>
                 <div className="relative flex-none grow ">
                     <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                        <li><Link to='/gamelist'>Gamelist</Link></li>
+                        <li><Link to='/Home'>Home</Link></li>
                         <li><Link to='/table'>Table</Link></li>
                         <li><Link to='/history'>Bookings</Link></li>
                     </div>
@@ -64,19 +64,19 @@ function Navbar() {
                             {user !== null ? (
                                 <tbody>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Name</td>
-                                        <td class="px-2 py-2 text-white ">{user.username}</td>
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Name</td>
+                                        <td className="px-2 py-2 text-white ">{user.username}</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Email</td>
-                                        <td class="px-2 py-2 text-white">{user.email}</td>
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Email</td>
+                                        <td className="px-2 py-2 text-white">{user.email}</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-2 py-2 text-gray-500 font-bold">Role</td>
+                                        <td className="px-2 py-2 text-gray-500 font-bold">Role</td>
                                         {user.isAdmin === true ? (
-                                            <td class="px-2 py-2 text-white">Admin</td>
+                                            <td className="px-2 py-2 text-white">Admin</td>
                                         ):(
-                                            <td class="px-2 py-2 text-white">User</td>
+                                            <td className="px-2 py-2 text-white">User</td>
                                         )}
                                     </tr>
                                 </tbody>

@@ -5,7 +5,6 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Table from './pages/table/Table';
 import History from './pages/History';
-import GameList from './pages/GameList';
 import Intro from './pages/introduce/intro';
 
 function App() {
@@ -18,7 +17,6 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/table" element={<Table />} />
           <Route path="/history" element={<History />} />
-          <Route path="/gamelist" element={<GameList />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

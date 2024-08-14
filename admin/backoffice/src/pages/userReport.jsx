@@ -74,7 +74,7 @@ function userReport() {
   return (
     <Template>
       <div className="flex w-full flex-col">
-        <div className="divider divider-success font-bold">USERS</div>
+        <div className="divider divider-success font-bold">Users</div>
       </div>
       <div className="overflow-x-auto">
         <table className="table glass border">

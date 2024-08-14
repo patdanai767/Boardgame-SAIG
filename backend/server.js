@@ -6,7 +6,6 @@ import dotenv from "dotenv"
 import cookieParser from 'cookie-parser';
 import authRoute from "./routes/auth.js";
 import gameRoute from "./routes/game.js";
-import userRoute from "./routes/user.js";
 import tableRoute from "./routes/table.js";
 import roomRoute from "./routes/room.js";
 import catRoute from "./routes/cat.js";
@@ -31,7 +30,6 @@ try {
 
 app.use("/api/auth", authRoute);
 app.use("/api/game", gameRoute);
-app.use("/api/user", userRoute);
 app.use("/api/table", tableRoute);
 app.use("/api/room", roomRoute);
 app.use("/api/cat", catRoute);

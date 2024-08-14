@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes, subDays, addDays, setSeconds, setMilliseconds } from "date-fns";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Table = () => {
   const [tables, setTables] = useState([]);
@@ -98,10 +99,15 @@ const Table = () => {
         userId: user._id,
         game: search,
         tables: selectedTables,
-        totalAmount: price
+        totalAmount: price,
       }
-      await axios.post("api/booking", payload);
-      navigator("/");
+        await axios.post("api/booking", payload).then(() => {
+          Swal.fire({
+            title:"Success",
+            icon:"success",
+            timer: 1500
+          }).then(() => navigator("/"))
+        })
     } catch (err) {
     }
   }
@@ -121,15 +127,17 @@ const Table = () => {
 
   return (
     <div className="background">
+      <div className="divider divider-accent font-bold">Reservation</div>
       <div className="flex">
         <div className="room">
+        <div className="font-bold text-gray-400 mb-2 text-center">Select Room</div>
           <div className="grid grid-rows-3 grid-flow-col gap-10 p-4">
             {rooms.length > 0 ? rooms.map((items, index) => (
               <div className="text-center border p-3" key={items._id}>{items.title} ({items.desc})
                 {tables.length > 0 ? tables.map((table, i) => (
                   <div key={i}>
                     {rooms[index].tables ? items.tables.map((e, ing) => (
-                      <div className="grid grid-rows-2 grid-flow-col gap-2">
+                      <div className="">
                         {table.tableNumbers.length > 0 && items.tables[ing] === table._id ? table.tableNumbers.map((num) => (
                           <div key={num._id}>
                             <input type="checkbox" className="hidden peer" id={num._id} value={num._id} onChange={handleSelect} disabled={!isAvailable(num)} />
@@ -148,13 +156,12 @@ const Table = () => {
         </div>
 
         <div className="card">
-          <div className="block text-center">Reservation</div>
           <div className="card-body gap-10">
             <div>
               <div className="font-bold text-gray-400 ml-8 mb-2">Time Interval</div>
               <div className="flex text-center items-center">
                 <DatePicker
-                  className="time"
+                  className="btn btn-outline"
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   includeDateIntervals={[
@@ -162,7 +169,7 @@ const Table = () => {
                   ]}
                 />
                 <DatePicker
-                  className="time"
+                  className="btn btn-outline"
                   selected={startTime}
                   onChange={(date) => setStartTime(date)}
                   showTimeSelect
@@ -174,9 +181,9 @@ const Table = () => {
                   maxTime={setHours(setMinutes(new Date(), 30), 20)}
                   dateFormat="kk:mm"
                 />
-                <div>To</div>
+                <div className="mr-2 ml-2">-</div>
                 <DatePicker
-                  className="time"
+                  className="btn btn-outline"
                   selected={endTime}
                   onChange={(date) => setEndTime(date)}
                   showTimeSelect
@@ -202,10 +209,6 @@ const Table = () => {
                     <li><button className="text-white" onClick={() => onSearch(item.gamename)}>{item.gamename}</button></li>
                   ))}
               </ul>
-            </div>
-            <div>
-              <div className="font-bold text-gray-400 ml-8 mb-2">Select Room</div>
-              <input type="click" readOnly placeholder="Select room and table" className="input input-bordered w-full max-w-xs text-white" />
             </div>
             <div>
               <div className="font-bold text-gray-400 ml-8 mb-2">Price</div>

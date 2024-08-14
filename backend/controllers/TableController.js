@@ -21,6 +21,18 @@ export const createTable = async (req, res, next) => {
     }
 }
 
+export const createTableNumber = async (req, res, next) => {
+    const newTableNum = new tableModel({"tableNumbers": req.body});
+
+    try {
+        const saveTable = await newTableNum.save();
+        res.status(200).json(saveTable);
+    } catch (err) {
+        next(err);
+    }
+}
+
+
 export const updateTable = async (req, res, next) => {
 
     try {
@@ -81,6 +93,17 @@ export const getTables = async (req, res, next) => {
 export const getTable = async (req, res, next) => {
     try {
         const showTable = await tableModel.findById(req.params.id);
+        res.status(200).json(showTable);
+    } catch (err) {
+        next(err);
+    }
+}
+
+export const test = async (req, res, next) => {
+    try {
+        const showTable = await tableModel.findById(req.params.id);
+
+        
         res.status(200).json(showTable);
     } catch (err) {
         next(err);

@@ -11,7 +11,6 @@ const tableSchema = new mongoose.Schema(
         },
         capacity: {
             type: Number,
-            required: true
         },
         tableNumbers: [
             {
@@ -19,9 +18,6 @@ const tableSchema = new mongoose.Schema(
                 unavailableDates: {type: [Date]}
             }
         ],
-        game: {
-            type:[String]
-        }
     },
     {timestamps: true}
 );

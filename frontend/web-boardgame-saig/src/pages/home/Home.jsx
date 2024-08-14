@@ -7,9 +7,11 @@ import "./Home.css";
 
 function Home() {
   const [games, setGames] = useState([]);
+  const [cats, setCats] = useState([]);
   const [search, setSearch] = useState('');
   const { user } = useContext(AuthContext);
   const [currentPage, setCurrentPage] = useState(1);
+  const [newGames, setNewGames] = useState([]);
   const recordsPerPage = 4;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -27,6 +29,9 @@ function Home() {
     try {
       await axios.get("/api/game").then(res => {
         setGames(res.data);
+      })
+      await axios.get("/api/cat").then(res => {
+        setCats(res.data);
       })
     } catch (err) {
       res.status(400).json(err)
@@ -57,33 +62,33 @@ function Home() {
     }
   }
 
+  const filterItems = (cat) => {
+    games.filter((val) => val.cats.map(newval => newval === cat._id ? setNewGames(val) || console.log(val):""));
+  }
+
+
   return (
     <>
-      <div className="max-w-lg mx-auto text-center">
-      <label className="input input-bordered flex items-center gap-2">
-        <input type="text" className="grow" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 16 16"
-          fill="currentColor"
-          className="h-4 w-4 opacity-70">
-          <path
-            fillRule="evenodd"
-            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-            clipRule="evenodd" />
-        </svg>
+      <div className="max-w-lg mx-auto text-center shadow-2xl">
+        <label className="input input-bordered flex items-center gap-2">
+          <input type="text" className="shadow-2xl" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="h-4 w-4 opacity-70">
+            <path
+              fillRule="evenodd"
+              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+              clipRule="evenodd" />
+          </svg>
         </label>
       </div>
-
-      {/* Select Catagory */}
-      {/* <select className="select select-bordered join-item" onChange={handleSelect}>
-        <option value="">All</option>
-        {dataCats.map(item => (
-          <option key={item._id} value={item._id}>{item.title}</option>
+      <div className="text-center mt-2">
+        {cats.map((item) => (
+          <div key={item._id} className="btn btn-sm text-center mr-1 ml-1 btn-outline" onClick={e => filterItems(item)}>{item.title}</div>
         ))}
-      </select> */}
-
-      {/* BoardGame List */}
+      </div>
       <div>
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className=" text-lg text-center mb-3 font-bold">Products</h2>
@@ -92,11 +97,11 @@ function Home() {
               return search.toLowerCase() === '' ?
                 item : item.gamename.toLowerCase().includes(search);
             }).map((item) => (
-              <a className="group border p-3" key={item._id}>
+              <a className="group shadow-2xl p-3 grow border-double border-4 border" key={item._id}>
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img
                     alt="yehh"
-                    src={"http://localhost:8081/" + item.img}
+                    src={item.img}
                     className="h-full w-full object-cover object-center group-hover:opacity-75"
                   />
                 </div>
@@ -111,9 +116,7 @@ function Home() {
         <div className="text-center">
           <div className="join grid-5 border">
             <button className="join-item btn" onClick={prevPage}>⇐</button>
-            {numbers.map((n, i) => (
-              <button className={`join-item btn btn-square  ${currentPage === n ? 'active' : ''}`} key={i}>Page {n}</button>
-            ))}
+            <button className="join-item btn">Page {currentPage}</button>
             <button className="join-item btn" onClick={nextPage}>⇒</button>
           </div>
         </div>

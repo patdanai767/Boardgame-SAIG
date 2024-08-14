@@ -28,3 +28,12 @@ export const getBookings = async(req,res,next) => {
         next(err)
     }
 }
+
+export const deleteBooking = async (req, res, next) => {
+    try {
+        await BookingModel.findByIdAndDelete(req.params.id);
+        res.status(200).json("Table has been deleted.")
+    } catch (err) {
+        next(err);
+    }
+}

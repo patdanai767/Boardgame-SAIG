@@ -118,25 +118,7 @@ function boardgame() {
     }
   };
 
-  const showCats = (item) => {
-    // ERROR child
-    return (
-      <>
-        {item.cats.map((cat) => (
-          <>
-            {cats.map((itemcats) => (
-              cat === itemcats._id ? <span key={itemcats._id}>{itemcats.title} </span> : ""
-            ))}
-          </>
-        ))}
-      </>
-    )
-  }
-
-  const edit = (e) => {
-    setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }))
-  }
-
+  
   const handleUpdate = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -154,7 +136,7 @@ function boardgame() {
         cats: selectedCats,
         img: url,
       };
-
+      
       await axios.put("api/game/" + selectedit._id, newGame).then(() => {
         window.location.reload();
       })
@@ -162,9 +144,23 @@ function boardgame() {
       console.log(err);
     }
   }
-
+  const showCats = (item) => {
+    // ERROR child
+    return (
+      <>
+        {item.cats.map((cat) => (
+          <>
+            {cats.map((itemcats) => (
+              cat === itemcats._id ? <span key={itemcats._id}>{itemcats.title} </span> : ""
+            ))}
+          </>
+        ))}
+      </>
+    )
+  }
+  
   console.log(selectedit)
-
+  
   return (
     <>
       <Template>
