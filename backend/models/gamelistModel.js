@@ -14,15 +14,8 @@ const gamelist = new mongoose.Schema({
         type: [String],
         required: true
     },
-    year: {
-        type: Number,
-        required: true
-    },
     desc: {
         type: String
-    },
-    rooms: {
-        type: [String]
     }
 }, { timestamps: true });
 

@@ -81,6 +81,7 @@ function userReport() {
           <thead>
             <tr>
               <th></th>
+              <th className="text-lg">ID</th>
               <th className="text-lg">Email</th>
               <th className="text-lg">Name</th>
               <th className="text-lg">CreateAt</th>
@@ -92,6 +93,7 @@ function userReport() {
             {records.map((item, index) => (
               <tr className="hover" key={index}>
                 <th>{index + 1}</th>
+                <td>{item._id}</td>
                 <td>{item.email}</td>
                 <td>{item.username}</td>
                 <td>{format((item.createdAt), "Pp")}</td>

@@ -1,4 +1,4 @@
-const Modal = ({ isVisble, onClose, children }) => {
+const Modal = ({ isVisble, onClose, children}) => {
     if (!isVisble) return null;
 
     const handleClose = (e) => {

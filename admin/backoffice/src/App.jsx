@@ -14,7 +14,7 @@ function App() {
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
 
-    if (!user){
+    if (!user) {
       return <Navigate to="/login" />;
     }
 
@@ -26,11 +26,11 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route path='/' element={<Home />} />
-          <Route path='/userReport' element={<UserPage/>}/>
-          <Route path='/category' element={<CatPage/>}/>
-          <Route path='/roomandtable' element={<RoomPage/>}/>
-          <Route path='/boardgame' element={<GamePage/>}/>
+          <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path='/userReport' element={<ProtectedRoute><UserPage /></ProtectedRoute>} />
+          <Route path='/category' element={<ProtectedRoute><CatPage /></ProtectedRoute>} />
+          <Route path='/roomandtable' element={<ProtectedRoute><RoomPage /></ProtectedRoute>} />
+          <Route path='/boardgame' element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>
