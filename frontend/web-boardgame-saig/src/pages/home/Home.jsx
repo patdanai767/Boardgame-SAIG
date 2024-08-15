@@ -15,8 +15,8 @@ function Home() {
   const recordsPerPage = 4;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  const records = games.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(games.length / recordsPerPage);
+  const records = newGames.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(newGames.length / recordsPerPage);
   const numbers = [...Array(npage + 1).keys()].slice(1)
 
   const navigate = useNavigate();
@@ -29,6 +29,7 @@ function Home() {
     try {
       await axios.get("/api/game").then(res => {
         setGames(res.data);
+        setNewGames(res.data);
       })
       await axios.get("/api/cat").then(res => {
         setCats(res.data);
@@ -37,10 +38,6 @@ function Home() {
       res.status(400).json(err)
     }
   }
-
-  // const handleSelect = (e) => {
-  //   setSearchCat(e.target.value)
-  // }
 
   const prevPage = () => {
     if (currentPage !== 1) {
@@ -63,7 +60,8 @@ function Home() {
   }
 
   const filterItems = (cat) => {
-    games.filter((val) => val.cats.map(newval => newval === cat._id ? setNewGames(val) || console.log(val):""));
+    const a = games.filter(val => val.cats.includes(cat._id));
+    setNewGames(a);
   }
 
 
@@ -71,7 +69,7 @@ function Home() {
     <>
       <div className="max-w-lg mx-auto text-center shadow-2xl">
         <label className="input input-bordered flex items-center gap-2">
-          <input type="text" className="shadow-2xl" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input type="text" className="grow" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -84,9 +82,12 @@ function Home() {
           </svg>
         </label>
       </div>
+
+
       <div className="text-center mt-2">
+        <div className="btn btn-sm text-center mr-1 ml-1 btn-outline" onClick={e => setNewGames(games)}>All</div>
         {cats.map((item) => (
-          <div key={item._id} className="btn btn-sm text-center mr-1 ml-1 btn-outline" onClick={e => filterItems(item)}>{item.title}</div>
+          <input key={item._id} type="checkbox" className="btn mr-1 ml-1 btn-outline btn-sm" aria-label={item.title} onClick={() => filterItems(item)}/>
         ))}
       </div>
       <div>
