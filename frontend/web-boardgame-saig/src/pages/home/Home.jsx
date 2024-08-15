@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useContext } from "react"
 import { AuthContext } from "../../contexts/AuthContext"
-import useFetch from "../../hooks/useFetch"
 import { useNavigate } from "react-router-dom"
 import "./Home.css";
 
