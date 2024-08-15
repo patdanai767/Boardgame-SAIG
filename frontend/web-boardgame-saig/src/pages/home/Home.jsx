@@ -66,8 +66,8 @@ function Home() {
 
   return (
     <>
-      <div className="max-w-lg mx-auto text-center shadow-2xl">
-        <label className="input input-bordered flex items-center gap-2">
+      <div className="max-w-lg mx-auto text-center">
+        <label className="input input-bordered flex items-center gap-2 mt-4">
           <input type="text" className="grow" placeholder="Search Boardgame..." value={search} onChange={(e) => setSearch(e.target.value)} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ function Home() {
       <div className="text-center mt-2">
         <div className="btn btn-sm text-center mr-1 ml-1 btn-outline" onClick={e => setNewGames(games)}>All</div>
         {cats.map((item) => (
-          <input key={item._id} type="checkbox" className="btn mr-1 ml-1 btn-outline btn-sm" aria-label={item.title} onClick={() => filterItems(item)}/>
+          <div key={item._id} type="checkbox" className="btn mr-1 ml-1 btn-outline btn-sm" onClick={() => filterItems(item)}>{item.title}</div>
         ))}
       </div>
       <div>

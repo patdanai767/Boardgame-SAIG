@@ -1,12 +1,14 @@
-import React, { useContext, useEffect } from 'react'
-import { AuthContext } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom';
 import Template from '../components/Template';
+import "./home.css"
 function home() {
 
   return (
     <Template>
-      Welcome to Admin SERVER
+      <body className="flex justify-center">
+        <div className='animated-text'>
+          Welcome to <span></span>
+        </div>
+      </body>
     </Template>
   )
 }

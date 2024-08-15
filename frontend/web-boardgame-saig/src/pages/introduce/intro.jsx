@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 function intro() {
     return (
         <div className='banner'>
-            <Navbar />
             <div className="Content">
                 <h1>BOOKING BROADGAME</h1>
                 <p>Hi, you guys can use my website for booking SAIG-boardgame by click it here.</p>

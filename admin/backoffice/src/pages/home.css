@@ -1,0 +1,60 @@
+.animated-text{
+    font-size: 34px;
+    font-weight: 600;
+    min-width: 280px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.animated-text span{
+    position: relative;
+}
+
+.animated-text span::before{
+    content: "Youtuber";
+    color: #009688;
+    animation: words 20s infinite;
+}
+
+.animated-text span::after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 8px);
+    height: 100%;
+    background-color: #0f172a;
+    border-left: 2px solid #009688;
+    right: -8px;
+    animation: cursor .8s infinite, typing 20s steps(14) infinite;
+}
+
+@keyframes cursor {
+    to{
+        border-left: 2px solid #ff7f5000;
+    }
+}
+
+@keyframes words {
+    0%,20%{
+        content: "Boardgame";
+    }
+    21%,40%{
+        content: "SAIG";
+    }
+    41%,60%{
+        content: "change";
+    }
+    61%,80%{
+        content: "be Admin";
+    }
+    81%,100%{
+        content: "KMITL";
+    }
+}
+
+@keyframes typing {
+    10%,15%,30%,35%,50%,55%,70%,75%,90%,95%{
+        width: 0;
+    }
+    5%,20%,25%,40%,45%,60%,65%,80%,85%{
+        width: calc(100% + 8px);
+    }
+}

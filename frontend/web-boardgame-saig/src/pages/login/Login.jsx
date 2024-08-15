@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import "./bg.scss"
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -9,7 +10,7 @@ function Login() {
     password: undefined
   })
 
-  const { user,loading, error, dispatch } = useContext(AuthContext);
+  const { user, loading, error, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -19,13 +20,13 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch({ type: "LOGIN_START"});
+    dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post("/api/auth/login", credentials);
-      dispatch({type: "LOGIN_SUCCESS", payload: res.data.result});
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.result });
       navigate("/");
     } catch (err) {
-      dispatch({type: "LOGIN_FAILURE", payload: err.response.data})
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response.data })
     }
   }
 
@@ -33,6 +34,11 @@ function Login() {
 
   return (
     <div className='flex items-center h-screen w-full'>
+      <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
       <div className='card mx-auto bg-base-100 w-96 shadow-xl border bordered p-6'>
         <h1 className='mx-auto mb-6 text-xl'>Login</h1>
         <label className="input input-bordered flex items-center gap-2 mb-4">

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 function Register() {
 
@@ -18,9 +19,13 @@ function Register() {
         password: password
       }
       await axios.post('/api/auth/register', payload).then(res => {
-          if(res.data.message === 'success'){ 
-            navigate('/login');
-          }
+        if (res.data.message === 'success') {
+          Swal.fire({
+            title:"Success",
+            icon:"success",
+            timer:1000
+          }).then(() => navigate('/login'))
+        }
       })
     } catch (error) {
       throw error.response.data;
@@ -29,6 +34,11 @@ function Register() {
 
   return (
     <div className='flex items-center h-screen w-full'>
+      <div class="lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
       <div className='card mx-auto bg-base-100 w-96 shadow-xl bordered p-6'>
         <h1 className='mx-auto m-3 text-xl'>Register</h1>
 

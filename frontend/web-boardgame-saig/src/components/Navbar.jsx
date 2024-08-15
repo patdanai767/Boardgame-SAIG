@@ -23,36 +23,38 @@ function Navbar() {
 
     return (
         <>
-            <div className="Navbar">
-                <div className="">
-                    <Link to='/home' className="logo-navbar">BoardGame-SAIG</Link>
-                </div>
-                <div className="relative flex-none grow ">
-                    <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                        <li><Link to='/Home'>Home</Link></li>
-                        <li><Link to='/table'>Table</Link></li>
-                        <li><Link to='/history'>Bookings</Link></li>
+            <div className="bg-neutral">
+                <div className="Navbar ">
+                    <div className="">
+                        <Link to='/home' className="logo-navbar">BoardGame-SAIG</Link>
                     </div>
-                </div>
-                {user !== null && (
-                    <div className="flex-none gap-2 ml-4">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
-                                <img
-                                    alt="profile"
-                                    src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
-                                    onClick={(e) => setShowModal(true)} />
-                            </div>
+                    <div className="relative flex-none grow ">
+                        <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
+                            <li><Link to='/Home'>Home</Link></li>
+                            <li><Link to='/table'>Table</Link></li>
+                            <li><Link to='/history'>Bookings</Link></li>
                         </div>
                     </div>
-                )}
-
-                <div>
-                    {isLoggedIn && user === null ? (
-                        <Link className="btn btn-outline btn-success ml-4" to='/login'>Login</Link>
-                    ) : (
-                        <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
+                    {user !== null && (
+                        <div className="flex-none gap-2 ml-4">
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img
+                                        alt="profile"
+                                        src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
+                                        onClick={(e) => setShowModal(true)} />
+                                </div>
+                            </div>
+                        </div>
                     )}
+
+                    <div>
+                        {isLoggedIn && user === null ? (
+                            <Link className="btn btn-outline btn-success ml-4" to='/login'>Login</Link>
+                        ) : (
+                            <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -75,7 +77,7 @@ function Navbar() {
                                         <td className="px-2 py-2 text-gray-500 font-bold">Role</td>
                                         {user.isAdmin === true ? (
                                             <td className="px-2 py-2 text-white">Admin</td>
-                                        ):(
+                                        ) : (
                                             <td className="px-2 py-2 text-white">User</td>
                                         )}
                                     </tr>

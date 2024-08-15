@@ -101,13 +101,14 @@ const Table = () => {
         tables: selectedTables,
         totalAmount: price,
       }
-        await axios.post("api/booking", payload).then(() => {
-          Swal.fire({
-            title:"Success",
-            icon:"success",
-            timer: 1500
-          }).then(() => navigator("/"))
-        })
+      await axios.post("api/booking", payload).then(() => {
+        Swal.fire({
+          title: "Success",
+          text: "Already booking",
+          icon: "success",
+          timer: 1500
+        }).then(() => navigate("/home"))
+      })
     } catch (err) {
     }
   }
@@ -130,7 +131,7 @@ const Table = () => {
       <div className="divider divider-accent font-bold">Reservation</div>
       <div className="flex">
         <div className="room">
-        <div className="font-bold text-gray-400 mb-2 text-center">Select Room</div>
+          <div className="font-bold text-gray-400 mb-2 text-center">Select Room</div>
           <div className="grid grid-rows-3 grid-flow-col gap-10 p-4">
             {rooms.length > 0 ? rooms.map((items, index) => (
               <div className="text-center border p-3" key={items._id}>{items.title} ({items.desc})
@@ -161,15 +162,16 @@ const Table = () => {
               <div className="font-bold text-gray-400 ml-8 mb-2">Time Interval</div>
               <div className="flex text-center items-center">
                 <DatePicker
-                  className="btn btn-outline"
+                  className="btn btn-outline btn-accent"
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   includeDateIntervals={[
                     { start: subDays(new Date(), 1), end: addDays(new Date(), 7) },
                   ]}
                 />
+                <div className="mr-2 ml-2 font-bold">:</div>
                 <DatePicker
-                  className="btn btn-outline"
+                  className="btn btn-outline btn-info"
                   selected={startTime}
                   onChange={(date) => setStartTime(date)}
                   showTimeSelect
@@ -181,9 +183,9 @@ const Table = () => {
                   maxTime={setHours(setMinutes(new Date(), 30), 20)}
                   dateFormat="kk:mm"
                 />
-                <div className="mr-2 ml-2">-</div>
+                <div className="mr-2 ml-2 font-bold">-</div>
                 <DatePicker
-                  className="btn btn-outline"
+                  className="btn btn-outline btn-info"
                   selected={endTime}
                   onChange={(date) => setEndTime(date)}
                   showTimeSelect
@@ -199,7 +201,7 @@ const Table = () => {
             </div>
             <div className="dropdown">
               <div className="font-bold text-gray-400 ml-8 mb-2">BoardGame</div>
-              <input type="text" placeholder="Type here" value={search} onChange={e => setSearch(e.target.value)} className="input input-bordered w-full max-w-xs text-white" />
+              <input type="text" placeholder="Type here" value={search} onChange={e => setSearch(e.target.value)} className="input input-bordered w-full max-w-xs text-white input-success" />
               <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
                 {games.filter(item => {
                   return search.toLowerCase() === '' ?
@@ -212,8 +214,8 @@ const Table = () => {
             </div>
             <div>
               <div className="font-bold text-gray-400 ml-8 mb-2">Price</div>
-              <input type="click" readOnly placeholder={price} className="input input-bordered" />
-              <div className="btn btn-warning" onClick={calulatePrice}>Calulate</div>
+              <input type="click" readOnly placeholder={price} className="input input-bordered input-warning" />
+              <div className="btn btn-warning ml-2" onClick={calulatePrice}>Calulate</div>
             </div>
             <div>
               <button className="btn float-end btn-success" onClick={handleClick}>Reserve Now!</button>
