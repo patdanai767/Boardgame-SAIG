@@ -56,15 +56,17 @@ const History = () => {
         showCancelButton: true,
         showConfirmButton: true
       }).then(async res => {
-        await axios.delete("/api/booking/" + item._id).then(() => {
-          fetchData();
-            Swal.fire({
-              title: 'Delete Data',
-              text: 'Already deleted',
-              icon: 'success',
-              timer: 1500
-            })
-        })
+        if(res.isConfirmed){
+          await axios.delete("/api/booking/" + item._id).then(() => {
+            fetchData();
+              Swal.fire({
+                title: 'Delete Data',
+                text: 'Already deleted',
+                icon: 'success',
+                timer: 1500
+              })
+          })
+        }
       })
     } catch (error) {}
   }

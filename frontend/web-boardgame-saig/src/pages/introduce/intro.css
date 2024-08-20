@@ -6,13 +6,13 @@
     width: 100%;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-60%);
     text-align: center;
     color: #fff;
 }
 
 .Content h1 {
-    font-size: 70px;
+    font-size: 8vh;
     margin-top: 80px;
 }
 
