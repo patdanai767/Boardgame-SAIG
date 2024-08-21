@@ -31,7 +31,7 @@ const History = () => {
     } catch (err) {
     }
   }
-  
+
   // const showTables = (item) => {
   //   // ERROR child
   //   return (
@@ -82,7 +82,7 @@ const History = () => {
             <tr>
               <th></th>
               <th className='font-bold'>Boardgame</th>
-              <th className='font-bold'>Table</th>
+              <th className='font-bold'>Tables</th>
               <th className='font-bold'>Amount</th>
               <th className='font-bold'>Time interval</th>
               <th className='font-bold'>Action</th>
@@ -93,8 +93,8 @@ const History = () => {
               <tr className='hover'>
                 <th>{index + 1}</th>
                 <td>{item.game}</td>
-                <td>{item._id}</td>
-                <td>{item.totalAmount}</td>
+                <td>{item.tables.length}</td>
+                <td>{item.totalAmount} ฿</td>
                 <td>{`${format((item.end), "dd/MM/yyyy") + ", " + format((item.start), "p") + "-" + format((item.end), "p")}`}</td>
                 <td className='btn btn-outline btn-error' onClick={() => handleCancel(item)}>Cancel</td>
               </tr>
