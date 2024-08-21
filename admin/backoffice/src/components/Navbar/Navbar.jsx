@@ -8,6 +8,7 @@ function Navbar() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [click, setClick] = useState(false);
 
     const { user } = useContext(AuthContext);
 
@@ -21,39 +22,62 @@ function Navbar() {
         window.location.reload();
     }
 
+    const handleClick = () => {
+        setClick(!click);
+    }
+
+    const content = <>
+        <div className="lg-hidden block absolute top-w w-full left-0 right-0 bg-slate-900 transition">
+            <ul className="text-center text-xl p-20">
+                <li className="my-4 py-4 border-b border border-slate-800 hover:bg-slate-800 hover:rounded"><Link to='/gamelist'>Gamelist</Link></li>
+                <li className="my-4 py-4 border-b border border-slate-800 hover:bg-slate-800 hover:rounded"><Link to='/table'>Table</Link></li>
+                <li className="my-4 py-4 border-b border border-slate-800 hover:bg-slate-800 hover:rounded"><Link to='/history'>Bookings</Link></li>
+            </ul>
+        </div>
+    </>
+
     return (
         <>
             <div className="Navbar">
                 <div className="">
                     <Link to='/home' className="logo-navbar">BoardGame-SAIG</Link>
                 </div>
-                <div className="relative flex-none grow ">
-                    <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
-                        <li><Link to='/gamelist'>Gamelist</Link></li>
-                        <li><Link to='/table'>Table</Link></li>
-                        <li><Link to='/history'>Bookings</Link></li>
-                    </div>
-                </div>
-                {user !== null && (
-                    <div className="flex-none gap-2 ml-4">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                            <div className="w-10 rounded-full">
-                                <img
-                                    alt="profile"
-                                    src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
-                                    onClick={(e) => setShowModal(true)} />
-                            </div>
+                <div className="md:flex lg:flex-1 items center justify-end hidden">
+                    <div className="relative flex-none grow ">
+                        <div className="absolute right-0 grid grid-cols-3 gap-3 text-center ">
+                            <li><Link to='/gamelist'>Gamelist</Link></li>
+                            <li><Link to='/table'>Table</Link></li>
+                            <li><Link to='/history'>Bookings</Link></li>
                         </div>
                     </div>
-                )}
-
-                <div>
-                    {isLoggedIn && user === null ? (
-                        <Link className="btn btn-outline btn-success ml-4" to='/login'>Login</Link>
-                    ) : (
-                        <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
+                    {user !== null && (
+                        <div className="flex-none gap-2 ml-4">
+                            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                <div className="w-10 rounded-full">
+                                    <img
+                                        alt="profile"
+                                        src="https://cdn-icons-png.flaticon.com/512/456/456212.png"
+                                        onClick={(e) => setShowModal(true)} />
+                                </div>
+                            </div>
+                        </div>
                     )}
+
+                    <div>
+                        {isLoggedIn && user === null ? (
+                            <Link className="btn btn-outline btn-success ml-4" to='/login'>Login</Link>
+                        ) : (
+                            <a className="btn btn-outline btn-warning ml-4" onClick={handleSignOut}>Log out</a>
+                        )}
+                    </div>
                 </div>
+                <div>
+                    {click && content}
+                </div>
+
+                <button className="block sm:hidden transition" onClick={handleClick}>
+                    {click ? <i class="fa-solid fa-x"/>:<i class="fa-solid fa-bars"/>}
+                </button>
             </div>
 
             <Modal isVisble={showModal} onClose={e => setShowModal(false)}>
